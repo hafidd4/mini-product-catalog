@@ -2,6 +2,7 @@ services:
   # MySQL Database
   db:
     image: mysql:8.0
+    container_name: product_catalog_db_2
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: product_catalog
@@ -19,6 +20,7 @@ services:
     build:
       context: ./laravel-api
       dockerfile: Dockerfile
+    container_name: product_catalog_api_2
     environment:
       - DB_CONNECTION=mysql
       - DB_HOST=db
@@ -42,6 +44,7 @@ services:
     build:
       context: ./vue-frontend
       dockerfile: Dockerfile
+    container_name: product_catalog_frontend_2
     volumes:
       - ./vue-frontend:/app
       - /app/node_modules
@@ -54,6 +57,7 @@ services:
   # Nginx Reverse Proxy
   nginx:
     image: nginx:alpine
+    container_name: product_catalog_nginx_2
     ports:
       - "80:80"
     volumes:
