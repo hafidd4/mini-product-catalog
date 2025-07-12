@@ -1,0 +1,27 @@
+FROM php:8.3-fpm-alpine
+
+WORKDIR /var/www
+
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    curl \
+    git \
+    npm \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+
+# Install Node.js (Use the official Node.js version 18 image)
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+apt-get install -y nodejs
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Expose port 9000 for PHP-FPM
+EXPOSE 9000
+
+# Start PHP-FPM server
+CMD ["php-fpm"]
+
